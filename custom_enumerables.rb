@@ -16,9 +16,21 @@ module Enumerable
       to_enum
     end
   end
+
+  def my_each_with_index
+    if block_given?
+      length = self.length
+      length.times do |i|
+        yield self[i], i
+      end
+      self
+    else
+      to_enum
+    end
+  end
 end
 
 puts 'my_each vs. each'
 numbers = [1, 2, 3, 4, 5]
-numbers.my_each { |i| puts i }
-numbers.each { |i| puts i }
+numbers.my_each_with_index { |e, i| puts "#{e} #{i}" }
+numbers.each_with_index { |e, i| puts "#{e}" "#{i}" }
