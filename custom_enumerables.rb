@@ -7,7 +7,6 @@ module Enumerable
   def my_each
     # binding.pry
     if block_given?
-      length = self.length
       length.times do |i|
         yield self[i]
       end
@@ -19,7 +18,6 @@ module Enumerable
 
   def my_each_with_index
     if block_given?
-      length = self.length
       length.times do |i|
         yield self[i], i
       end
