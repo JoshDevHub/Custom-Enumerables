@@ -30,9 +30,7 @@ module Enumerable
   def my_select
     if block_given?
       results = []
-      my_each do |e|
-        results << e if yield(e)
-      end
+      my_each { |e| results << e if yield(e) }
       results
     else
       to_enum
@@ -44,3 +42,5 @@ puts 'my_select vs. select'
 numbers = [1, 2, 3, 4, 5]
 p numbers.my_select { |e| e < 3 }
 p numbers.select { |e| e < 3 }
+
+# TODO: test current methods with strings and hashes
