@@ -5,11 +5,8 @@ require 'pry-byebug'
 # My Enumerable methods
 module Enumerable
   def my_each
-    # binding.pry
     if block_given?
-      length.times do |i|
-        yield self[i]
-      end
+      length.times { |i| yield self[i] }
       self
     else
       to_enum
@@ -18,9 +15,7 @@ module Enumerable
 
   def my_each_with_index
     if block_given?
-      length.times do |i|
-        yield self[i], i
-      end
+      length.times { |i| yield self[i], i }
       self
     else
       to_enum
