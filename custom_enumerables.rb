@@ -26,9 +26,21 @@ module Enumerable
       to_enum
     end
   end
+
+  def my_select
+    if block_given?
+      results = []
+      my_each do |e|
+        results << e if yield(e)
+      end
+      results
+    else
+      to_enum
+    end
+  end
 end
 
-puts 'my_each vs. each'
+puts 'my_select vs. select'
 numbers = [1, 2, 3, 4, 5]
-numbers.my_each_with_index { |e, i| puts "#{e} #{i}" }
-numbers.each_with_index { |e, i| puts "#{e}" "#{i}" }
+p numbers.my_select { |e| e < 3 }
+p numbers.select { |e| e < 3 }
