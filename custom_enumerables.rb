@@ -37,11 +37,17 @@ module Enumerable
     my_each { |e| yield(e) || bool = false } if block_given?
     bool
   end
+
+  def my_any?
+    bool = true
+    bool = false if block_given? && my_all? { |e| !yield(e) }
+    bool
+  end
 end
 
 puts 'my_select vs. select'
-numbers = [1, 2, 3, 4, 5]
-p numbers.my_all?
-p numbers.all?
+numbers =  %w[1, 2, 3, 4, 5]
+p numbers.my_any? { |e| e.is_a? Integer }
+p numbers.any? { |e| e.is_a? Integer }
 
 # TODO: test current methods with strings and hashes
