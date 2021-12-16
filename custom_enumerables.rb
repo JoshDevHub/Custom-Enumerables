@@ -49,11 +49,21 @@ module Enumerable
     bool = true if block_given? && !my_any? { |e| yield(e) }
     bool
   end
+
+  def my_count(argument = nil)
+    return length unless block_given? || !argument.nil?
+
+    total = 0
+    my_each { |e| total += 1 if e == argument } unless argument.nil?
+    total
+  end
 end
 
 puts 'my_select vs. select'
-numbers = %w[1, 2, 3, 4, 5]
-p numbers.my_none?
-p numbers.none?
+numbers = [1, 2, 3, 4, nil]
+p numbers.my_count('2')
+p numbers.count { |e| e.nil? }
 
 # TODO: test current methods with strings and hashes
+# TODO: get #my_count working with blocks // research blocks vs. args ||
+# test if argument has been given?
