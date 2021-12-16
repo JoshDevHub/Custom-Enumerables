@@ -31,11 +31,17 @@ module Enumerable
       to_enum
     end
   end
+
+  def my_all?
+    bool = true
+    my_each { |e| yield(e) || bool = false } if block_given?
+    bool
+  end
 end
 
 puts 'my_select vs. select'
 numbers = [1, 2, 3, 4, 5]
-p numbers.my_select { |e| e < 3 }
-p numbers.select { |e| e < 3 }
+p numbers.my_all?
+p numbers.all?
 
 # TODO: test current methods with strings and hashes
