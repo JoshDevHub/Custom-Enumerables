@@ -64,6 +64,6 @@ numbers = [1, 2, 3, 4, nil]
 p numbers.my_count('2')
 p numbers.count { |e| e.nil? }
 
-# TODO: test current methods with strings and hashes
-# TODO: get #my_count working with blocks // research blocks vs. args ||
-# test if argument has been given?
+# TODO: get #my_count working with blocks // research blocks vs. args
+# TODO: how to test for if arg is given?
+# TODO: how to count nil argument
