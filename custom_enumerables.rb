@@ -9,7 +9,7 @@ module Enumerable
       length.times { |i| yield self[i] }
       self
     else
-      to_enum
+      to_enum(:my_each)
     end
   end
 
@@ -18,7 +18,7 @@ module Enumerable
       length.times { |i| yield self[i], i }
       self
     else
-      to_enum
+      to_enum(:my_each_with_index)
     end
   end
 
@@ -71,7 +71,7 @@ module Enumerable
       end
       result_container
     else
-      to_enum
+      to_enum(:my_map)
     end
   end
 
@@ -90,7 +90,7 @@ module Enumerable
   end
 
   def my_proc_map(my_proc = nil)
-    return to_enum unless my_proc.respond_to?(:call) || block_given?
+    return to_enum(:my_map) unless my_proc.respond_to?(:call) || block_given?
 
     collection = []
     if my_proc.respond_to?(:call)
@@ -118,7 +118,7 @@ numbers = [2, 4, 5]
 a_proc = proc { |e| e * 2 }
 p numbers.map(&a_proc)
 p numbers.my_map(&a_proc)
-p numbers.my_proc_map(a_proc)
+p numbers.my_map
 
 # Notes
 # Inject with no args raises LocalJumpError
