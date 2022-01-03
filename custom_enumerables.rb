@@ -89,11 +89,14 @@ module Enumerable
     memo
   end
 
-  def my_proc_map(my_proc)
+  def my_proc_map(my_proc = nil)
+    return to_enum unless my_proc.respond_to?(:call) || block_given?
+
     collection = []
-    my_each do |e|
-      new_element = my_proc.call(e)
-      collection << new_element
+    if my_proc.respond_to?(:call)
+      my_each { |e| collection << my_proc.call(e) }
+    else
+      my_each { |e| collection << yield(e) }
     end
     collection
   end
