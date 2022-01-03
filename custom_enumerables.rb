@@ -61,9 +61,22 @@ module Enumerable
     end
     total
   end
+
+  def my_map
+    if block_given?
+      result_container = []
+      my_each do |e|
+        result_element = yield(e)
+        result_container << result_element
+      end
+      result_container
+    else
+      to_enum
+    end
+  end
 end
 
 puts 'my_select vs. select'
-numbers = [1, 2, 4, 4, nil]
-p numbers.my_count { |e| e.nil? }
-p numbers.count { |e| e.nil? }
+numbers = [1, 2, 4, 4, 5]
+p numbers.my_map { |e| e**2 }
+p numbers.map { |e| e** 2 }
