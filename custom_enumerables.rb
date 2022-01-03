@@ -88,9 +88,18 @@ module Enumerable
     end
     memo
   end
+
+  def my_proc_map(my_proc)
+    collection = []
+    my_each do |e|
+      new_element = my_proc.call(e)
+      collection << new_element
+    end
+    collection
+  end
 end
 
-puts 'my_inject vs inject'
+puts 'my_proc_map vs. map'
 
 def my_multiply_els(array)
   array.my_inject(1) { |memo, number| memo * number }
@@ -103,8 +112,10 @@ def ruby_multiply_els(array)
 end
 
 numbers = [2, 4, 5]
-p my_multiply_els(numbers)
-p ruby_multiply_els(numbers)
+a_proc = proc { |e| e * 2 }
+p numbers.map(&a_proc)
+p numbers.my_map(&a_proc)
+p numbers.my_proc_map(a_proc)
 
 # Notes
 # Inject with no args raises LocalJumpError
@@ -113,3 +124,6 @@ p ruby_multiply_els(numbers)
 # -> inject(sym)
 # -> inject(init) { |memo, obj| block }
 # -> inject { |memo, obj| block }
+
+# TODO: inject with symbols/proc
+# TODO: full test methods?
