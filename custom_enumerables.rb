@@ -75,17 +75,36 @@ module Enumerable
     end
   end
 
-  def my_inject
-    # placeholder
+  def my_inject(init = nil)
+    memo = init || first
+    if init.nil?
+      my_each_with_index do |e, i|
+        next if i.zero?
+
+        memo = yield(memo, e)
+      end
+    else
+      my_each { |e| memo = yield(memo, e) }
+    end
+    memo
   end
 end
 
 puts 'my_inject vs inject'
-numbers = [2, 4, 5]
-def multiply_els(array)
+
+def my_multiply_els(array)
   array.my_inject(1) { |memo, number| memo * number }
 end
-# p multiply_els(numbers)
+
+def ruby_multiply_els(array)
+  array.inject(1) do |memo, number|
+    memo * number
+  end
+end
+
+numbers = [2, 4, 5]
+p my_multiply_els(numbers)
+p ruby_multiply_els(numbers)
 
 # Notes
 # Inject with no args raises LocalJumpError
