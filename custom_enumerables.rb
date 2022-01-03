@@ -74,9 +74,23 @@ module Enumerable
       to_enum
     end
   end
+
+  def my_inject
+    # placeholder
+  end
 end
 
-puts 'my_select vs. select'
-numbers = [1, 2, 4, 4, 5]
-p numbers.my_map { |e| e**2 }
-p numbers.map { |e| e** 2 }
+puts 'my_inject vs inject'
+numbers = [2, 4, 5]
+def multiply_els(array)
+  array.my_inject(1) { |memo, number| memo * number }
+end
+# p multiply_els(numbers)
+
+# Notes
+# Inject with no args raises LocalJumpError
+# Can take many different forms
+# -> inject(init, sym)
+# -> inject(sym)
+# -> inject(init) { |memo, obj| block }
+# -> inject { |memo, obj| block }
