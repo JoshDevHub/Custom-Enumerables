@@ -50,20 +50,20 @@ module Enumerable
     bool
   end
 
-  def my_count(argument = nil)
-    return length unless block_given? || !argument.nil?
-
+  def my_count(argument = omitted = true)
     total = 0
-    my_each { |e| total += 1 if e == argument } unless argument.nil?
+    if !omitted
+      my_each { |e| total += 1 if e == argument }
+    elsif block_given?
+      my_each { |e| total += 1 if yield(e) }
+    else
+      return length
+    end
     total
   end
 end
 
 puts 'my_select vs. select'
-numbers = [1, 2, 3, 4, nil]
-p numbers.my_count('2')
+numbers = [1, 2, 4, 4, nil]
+p numbers.my_count { |e| e.nil? }
 p numbers.count { |e| e.nil? }
-
-# TODO: get #my_count working with blocks // research blocks vs. args
-# TODO: how to test for if arg is given?
-# TODO: how to count nil argument
