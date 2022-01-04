@@ -75,18 +75,29 @@ module Enumerable
     end
   end
 
-  def my_inject(init = nil)
-    memo = init || first
-    if init.nil?
-      my_each_with_index do |e, i|
-        next if i.zero?
-
-        memo = yield(memo, e)
-      end
-    else
-      my_each { |e| memo = yield(memo, e) }
+  def my_inject(*args)
+    case args
+    in [Symbol] # rubocop: disable Lint/Syntax
+      symbol = args[0]
+    in [Object] # rubocop: disable Lint/Syntax
+      init = args[0]
+    in [a, Symbol] # rubocop: disable Lint/Syntax
+      init = a
+      symbol = args[1]
     end
+    memo = init || first
+    if block_given? || symbol
+      my_each_with_index do |e, i|
+        next if i.zero? && init.nil?
+
+        memo = if block_given?
+                 yield(memo, e)
+               else
+                 memo.send(symbol, e)
+               end
+      end
     memo
+    end
   end
 
   def my_proc_map(my_proc = nil)
@@ -100,33 +111,4 @@ module Enumerable
     end
     collection
   end
-end
-
-puts 'my_proc_map vs. map'
-
-def my_multiply_els(array)
-  array.my_inject(1) { |memo, number| memo * number }
-end
-
-def ruby_multiply_els(array)
-  array.inject(1) do |memo, number|
-    memo * number
-  end
-end
-
-numbers = [2, 4, 5]
-a_proc = proc { |e| e * 2 }
-p numbers.map(&a_proc)
-p numbers.my_map(&a_proc)
-p numbers.my_map
-
-# Notes
-# Inject with no args raises LocalJumpError
-# Can take many different forms
-# -> inject(init, sym)
-# -> inject(sym)
-# -> inject(init) { |memo, obj| block }
-# -> inject { |memo, obj| block }
-
-# TODO: inject with symbols/proc
-# TODO: full test methods?
+end # rubocop: disable Lint/Syntax
